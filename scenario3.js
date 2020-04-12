@@ -6,17 +6,19 @@ const { webdriver, Builder, By, Key, until } = require('selenium-webdriver'),
 let driver;
 
 describe('Yes Option Selected', function () {
-  let initialImgStr = '';
+  // let initialImgStr = '';
   before(async function () {
     driver = new Builder().forBrowser('chrome').build();
-    await driver.get('http://localhost:4200/?taskId=12d2aca9-68d0-11ea-936c-0a16f1679cc9');
+    // await driver.get('http://localhost:4200/?taskId=12d2aca9-68d0-11ea-936c-0a16f1679cc9');
+    await driver.get('http://localhost:4200/?taskId=faebaf49-6dd1-11ea-936c-0a16f1679cc9');
     // backup the initial canvas state
-    initialImgStr = await driver.executeScript('return document.querySelector(".lower-canvas").toDataURL();')
+    // initialImgStr = await driver.executeScript('return document.querySelector(".lower-canvas").toDataURL();')
     // modify canvas
     //  const script = 'var c = document.querySelector(".lower-canvas"); var ctx = c.getContext("2d"); ctx.fillStyle = "green"; ctx.font = "30px Arial";; ctx.fillText("Modified",240, 140);';
     // await driver.executeScript(script);
     // click Yes option
-    await driver.wait(until.elementIsVisible(driver.findElement(By.id('mat-radio-2'))));
+    // await driver.wait(until.elementIsVisible(driver.findElement(By.id('mat-radio-2'))));
+    await driver.wait(until.elementLocated(By.id('mat-radio-2')), 5000);
     await driver.findElement(By.xpath('//mat-radio-group/mat-radio-button[1]')).click();
   });
 
@@ -32,6 +34,7 @@ describe('Yes Option Selected', function () {
   });
 
   it('03 User Can Not Draw', async function () {
+    const initialImgStr = await driver.executeScript('return document.querySelector(".lower-canvas").toDataURL();')
     const imgStr = await driver.executeScript('return document.querySelector(".lower-canvas").toDataURL();')
     const isNotChanged = initialImgStr == imgStr;
     await assert.equal(isNotChanged, true);
